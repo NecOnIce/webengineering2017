@@ -1,9 +1,7 @@
 package com.micromata.webengineering.demo.post;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -12,16 +10,22 @@ import java.util.List;
  */
 @RestController
 public class PostController {
+
     @Autowired
     private PostService postService;
 
     @RequestMapping("/post")
-    public List<String> getPostList() {
+    public List<Post> getPostList() {
         return postService.getPosts();
     }
 
-    @RequestMapping(value = "/post/add")
+    @RequestMapping(value = "/post/add", method = RequestMethod.POST)
     public void addPost(@RequestParam("title") String title) {
-        postService.addPost(title);
+        postService.addPost(new Post(title));
+    }
+
+    @RequestMapping(value = "/post/${id}")
+    public Post getPost(@PathVariable("id") Long id) {
+        return postService.getPost(id);
     }
 }

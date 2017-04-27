@@ -10,14 +10,15 @@ import java.util.List;
  */
 @Service
 public class PostService {
-    private List<String> posts = new LinkedList<>();
+
+    private List<Post> posts = new LinkedList<>();
 
     /**
      * Retrieve the list of all posts.
      *
      * @return post list
      */
-    public List<String> getPosts() {
+    public List<Post> getPosts() {
         return posts;
     }
 
@@ -25,9 +26,14 @@ public class PostService {
     /**
      * Add a new post.
      *
-     * @param title the post title.
+     * @param post the post.
      */
-    public void addPost(String title) {
-        posts.add(title);
+    public void addPost(Post post) {
+        posts.add(post);
+    }
+
+    public Post getPost(Long id) {
+        int index = posts.indexOf(id);
+        return posts.get(index);
     }
 }
