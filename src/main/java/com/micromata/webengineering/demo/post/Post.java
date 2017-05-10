@@ -10,11 +10,9 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class Post {
 
-    private Long id;
+    private int id;
     private String title;
     private LocalDateTime createdAt;
-
-    static AtomicLong ID_COUNTER = new AtomicLong();
 
     /**
      * create a Post with the given title
@@ -24,7 +22,6 @@ public class Post {
     public Post(String title) {
         this.title = title;
         this.createdAt = LocalDateTime.now();
-        this.id = ID_COUNTER.incrementAndGet();
     }
 
     public String getTitle() {
@@ -39,8 +36,12 @@ public class Post {
         return createdAt;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override
@@ -50,11 +51,16 @@ public class Post {
 
         Post post = (Post) o;
 
-        return id != null ? id.equals(post.id) : post.id == null;
+        if (id != post.id) return false;
+        if (title != null ? !title.equals(post.title) : post.title != null) return false;
+        return createdAt != null ? createdAt.equals(post.createdAt) : post.createdAt == null;
     }
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        int result = id;
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
+        return result;
     }
 }

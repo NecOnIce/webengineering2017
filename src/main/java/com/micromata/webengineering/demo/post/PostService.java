@@ -29,11 +29,28 @@ public class PostService {
      * @param post the post.
      */
     public void addPost(Post post) {
-        posts.add(post);
+        if (posts.add(post)) {
+            post.setId(posts.indexOf(post));
+        }
     }
 
-    public Post getPost(Long id) {
-        int index = posts.indexOf(id);
-        return posts.get(index);
+    /**
+     * get the single Post with the given ID
+     *
+     * @param id The ID of the Post
+     * @return The requested Post
+     */
+    public Post getPost(int id) {
+        return posts.get(id);
+    }
+
+    /**
+     * delete the Post with the given ID
+     *
+     * @param id The ID of the Post to delete
+     * @return the deleted Post
+     */
+    public Post deletePost(int id) {
+        return posts.remove(id);
     }
 }

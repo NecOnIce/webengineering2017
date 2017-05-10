@@ -24,8 +24,13 @@ public class PostController {
         postService.addPost(new Post(title));
     }
 
-    @RequestMapping(value = "/post/${id}")
-    public Post getPost(@PathVariable("id") Long id) {
+    @RequestMapping(value = "/post/{id}", method = RequestMethod.GET)
+    public Post getPost(@PathVariable("id") int id) {
         return postService.getPost(id);
+    }
+
+    @RequestMapping(value = "/post/{id}", method = RequestMethod.DELETE)
+    public Post deletePost(@PathVariable("id") int id) {
+        return postService.deletePost(id);
     }
 }
