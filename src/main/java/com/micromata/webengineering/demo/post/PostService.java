@@ -1,9 +1,7 @@
 package com.micromata.webengineering.demo.post;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Handle all CRUD operations for posts.
@@ -11,15 +9,16 @@ import java.util.List;
 @Service
 public class PostService {
 
-    private List<Post> posts = new LinkedList<>();
+    @Autowired
+    private PostRepository repository;
 
     /**
      * Retrieve the list of all posts.
      *
      * @return post list
      */
-    public List<Post> getPosts() {
-        return posts;
+    public Iterable<Post> getPosts() {
+        return repository.findAll();
     }
 
 
@@ -29,28 +28,25 @@ public class PostService {
      * @param post the post.
      */
     public void addPost(Post post) {
-        if (posts.add(post)) {
-            post.setId(posts.indexOf(post));
-        }
+        repository.save(post);
     }
 
     /**
-     * get the single Post with the given ID
+     * Retrieve a single post.
      *
-     * @param id The ID of the Post
-     * @return The requested Post
+     * @param id post id
+     * @return post with the id or null if no post is found
      */
-    public Post getPost(int id) {
-        return posts.get(id);
+    public Post getPost(Long id) {
+        return repository.findOne(id);
     }
 
     /**
-     * delete the Post with the given ID
+     * Remove a single post.
      *
-     * @param id The ID of the Post to delete
-     * @return the deleted Post
+     * @param id the post's id.
      */
-    public Post deletePost(int id) {
-        return posts.remove(id);
+    public void deletePost(Long id) {
+        repository.delete(id);
     }
 }
