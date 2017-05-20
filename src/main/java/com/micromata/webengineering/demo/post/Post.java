@@ -16,7 +16,7 @@ import javax.persistence.*;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @AttributeOverride(name = "id", column = @Column(name = "post_id",
-        nullable = false, columnDefinition = "BIGINT UNSIGNED"))
+        nullable = false, columnDefinition = "BIGINT"))
 @Data
 @NoArgsConstructor
 public class Post extends DefaultEntity {
