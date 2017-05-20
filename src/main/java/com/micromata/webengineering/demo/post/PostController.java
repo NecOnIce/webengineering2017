@@ -1,7 +1,10 @@
 package com.micromata.webengineering.demo.post;
 
+import com.micromata.webengineering.demo.URL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * HTTP endpoint for a post-related HTTP requests.
@@ -18,8 +21,11 @@ public class PostController {
     }
 
     @RequestMapping(value = "/post", method = RequestMethod.POST)
-    public void addPost(@RequestBody Post post) {
+    public URL addPost(@RequestBody Post post, HttpServletRequest httpServletRequest) {
+        String contextPath = httpServletRequest.getContextPath();
         postService.addPost(post);
+        String getPostPath = contextPath.concat("/post/").concat(post.getId().toString());
+        return new URL(getPostPath);
     }
 
     @RequestMapping(value = "/post/{id}", method = RequestMethod.GET)

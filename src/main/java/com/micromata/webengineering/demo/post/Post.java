@@ -1,7 +1,10 @@
 package com.micromata.webengineering.demo.post;
 
+import com.micromata.webengineering.demo.DefaultEntity;
+
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,14 +15,17 @@ import javax.persistence.Id;
  * Created by Jonas Scherbaum on 24.04.2017.
  */
 @Entity
-public class Post {
+public class Post extends DefaultEntity {
 
     @Id
     @GeneratedValue
     private Long id;
 
+    @Column(length = 512)
     private String title;
-    private Date createdAt;
+
+    public Post() {
+    }
 
     /**
      * create a Post with the given title
@@ -28,7 +34,6 @@ public class Post {
      */
     public Post(String title) {
         this.title = title;
-        this.createdAt = new Date();
     }
 
     public String getTitle() {
