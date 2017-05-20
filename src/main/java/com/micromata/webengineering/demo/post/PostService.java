@@ -1,7 +1,6 @@
 package com.micromata.webengineering.demo.post;
 
 import com.micromata.webengineering.demo.user.UserService;
-import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
