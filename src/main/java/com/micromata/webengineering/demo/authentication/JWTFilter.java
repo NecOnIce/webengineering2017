@@ -51,7 +51,7 @@ public class JWTFilter extends GenericFilterBean {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
-        Optional<String> optionalAuth = Optional.of(httpServletRequest.getHeader("Authorization"));
+        Optional<String> optionalAuth = Optional.ofNullable(httpServletRequest.getHeader("Authorization"));
 
         if (!optionalAuth.isPresent()) {
             log.warn("No authorization token submitted");
