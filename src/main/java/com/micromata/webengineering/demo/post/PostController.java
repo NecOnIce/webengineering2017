@@ -1,7 +1,9 @@
 package com.micromata.webengineering.demo.post;
 
-import com.micromata.webengineering.demo.URL;
+import com.micromata.webengineering.demo.ServerAddressService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,27 +15,42 @@ import javax.servlet.http.HttpServletRequest;
 public class PostController {
 
     @Autowired
-    private PostService postService;
+    public PostController(PostService postService, ServerAddressService serverAddressService) {
+        this.postService = postService;
+        this.serverAddressService = serverAddressService;
+    }
 
-    @RequestMapping(value = "/post", method = RequestMethod.GET)
+    private static class CreatedPost {
+        private String url;
+    }
+
+    private final PostService postService;
+    private final ServerAddressService serverAddressService;
+
+    @RequestMapping(value = "/api/post", method = RequestMethod.GET)
     public Iterable<Post> getPostList() {
         return postService.getPosts();
     }
 
-    @RequestMapping(value = "/post", method = RequestMethod.POST)
-    public URL addPost(@RequestBody Post post, HttpServletRequest httpServletRequest) {
-        String contextPath = httpServletRequest.getContextPath();
+    @RequestMapping(value = "/api/post", method = RequestMethod.POST)
+    public ResponseEntity<Object> addPost(@RequestBody Post post, HttpServletRequest httpServletRequest) {
+
+        if (post.getTitle() != null && post.getTitle().length() > Post.POST_TITLE_LENGTH) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         postService.addPost(post);
-        String getPostPath = contextPath.concat("/post/").concat(post.getId().toString());
-        return new URL(getPostPath);
+        CreatedPost createdPost = new CreatedPost();
+        createdPost.url = serverAddressService.getServerURL() + "/api/post/" + post.getId();
+        return ResponseEntity.ok(createdPost);
     }
 
-    @RequestMapping(value = "/post/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/post/{id}", method = RequestMethod.GET)
     public Post getPost(@PathVariable Long id) {
         return postService.getPost(id);
     }
 
-    @RequestMapping(value = "/post/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/post/{id}", method = RequestMethod.DELETE)
     public void deletePost(@PathVariable Long id) {
         postService.deletePost(id);
     }

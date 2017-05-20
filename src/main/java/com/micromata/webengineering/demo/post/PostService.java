@@ -1,5 +1,7 @@
 package com.micromata.webengineering.demo.post;
 
+import com.micromata.webengineering.demo.user.UserService;
+import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,8 +11,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class PostService {
 
+    private final PostRepository repository;
+    private final UserService userService;
+
     @Autowired
-    private PostRepository repository;
+    public PostService(UserService userService, PostRepository repository) {
+        this.userService = userService;
+        this.repository = repository;
+    }
 
     /**
      * Retrieve the list of all posts.
@@ -18,7 +26,7 @@ public class PostService {
      * @return post list
      */
     public Iterable<Post> getPosts() {
-        return repository.findAllByOrderByCreatedAtAsc();
+        return repository.findAllByOrderByCreatedAtDesc();
     }
 
 
@@ -28,6 +36,7 @@ public class PostService {
      * @param post the post.
      */
     public void addPost(Post post) {
+        post.setAuthor(userService.getCurrentUser());
         repository.save(post);
     }
 
@@ -47,6 +56,12 @@ public class PostService {
      * @param id the post's id.
      */
     public void deletePost(Long id) {
+
+        Post post = this.repository.findOne(id);
+        if (!post.getAuthor().equals(userService.getCurrentUser())) {
+            throw new IllegalStateException("User not allowed to delete post");
+        }
+
         repository.delete(id);
     }
 }

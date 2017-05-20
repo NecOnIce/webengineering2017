@@ -1,54 +1,32 @@
 package com.micromata.webengineering.demo.post;
 
 import com.micromata.webengineering.demo.DefaultEntity;
+import com.micromata.webengineering.demo.user.User;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * This Pojo represents a Post
  *
  * Created by Jonas Scherbaum on 24.04.2017.
  */
+@EqualsAndHashCode(callSuper = true)
 @Entity
+@AttributeOverride(name = "id", column = @Column(name = "post_id",
+        nullable = false, columnDefinition = "BIGINT UNSIGNED"))
+@Data
+@NoArgsConstructor
 public class Post extends DefaultEntity {
 
-    @Id
-    @GeneratedValue
-    private Long id;
+    public static final int POST_TITLE_LENGTH = 1024;
 
-    @Column(length = 512)
+    @Column(length = POST_TITLE_LENGTH)
     private String title;
 
-    public Post() {
-    }
-
-    /**
-     * create a Post with the given title
-     *
-     * @param title the title of the Post
-     */
-    public Post(String title) {
-        this.title = title;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public Long getId() {
-        return id;
-    }
+    @ManyToOne(optional = false)
+    @JoinColumn
+    private User author;
 }

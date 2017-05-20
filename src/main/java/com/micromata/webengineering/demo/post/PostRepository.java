@@ -9,5 +9,5 @@ public interface PostRepository extends CrudRepository<Post, Long> {
      *
      * @return the ordered List
      */
-    Iterable<Post> findAllByOrderByCreatedAtAsc();
+    Iterable<Post> findAllByOrderByCreatedAtDesc();
 }
