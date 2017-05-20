@@ -19,7 +19,7 @@ import java.util.List;
  */
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@AttributeOverride(name = "id", column = @Column(name = "post_id",
+@AttributeOverride(name = "id", column = @Column(name = "user_id",
         nullable = false, columnDefinition = "BIGINT"))
 @Data
 @NoArgsConstructor
