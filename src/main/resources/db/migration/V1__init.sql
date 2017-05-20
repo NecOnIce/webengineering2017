@@ -1,0 +1,14 @@
+CREATE TABLE USERS (
+  user_id BIGINT NOT NULL PRIMARY KEY,
+  createdAt TIMESTAMP NOT NULL,
+  username VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE POSTS (
+  post_id BIGINT not NULL PRIMARY KEY,
+  title VARCHAR(1024),
+  author_id BIGINT NOT NULL REFERENCES users(author_id),
+  createdAt TIMESTAMP NOT NULL
+);

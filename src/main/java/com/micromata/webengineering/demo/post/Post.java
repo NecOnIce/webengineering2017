@@ -6,10 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 /**
  * This Pojo represents a Post
@@ -18,6 +15,8 @@ import javax.persistence.ManyToOne;
  */
 @EqualsAndHashCode(callSuper = true)
 @Entity
+@AttributeOverride(name = "id", column = @Column(name = "post_id",
+        nullable = false, columnDefinition = "BIGINT"))
 @Data
 @NoArgsConstructor
 public class Post extends DefaultEntity {
